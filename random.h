@@ -1,7 +1,9 @@
 #pragma once
+
 #include <any>
 #include <random>
 #include <chrono>
+#include <iostream>
 
 namespace wrg {
     template <class T, class Enable = void>
@@ -25,7 +27,7 @@ namespace wrg {
         template<class T>
         wrdrg& operator << (const T& _t) {
             _value = _t;
-            _os << _t;
+            if(_print) _os << _t;
             return *this;
         }
 
@@ -38,9 +40,15 @@ namespace wrg {
         }
 
         template<class T, typename... Args>
-        static T tget(T& _t, Args... args) {
+        static T get(T& _t, Args... args) {
             static random<T> _device;
             return _t = _device.get(args...);
+        }
+
+        template<class T, typename... Args>
+        static T tget(Args... args) {
+            static random<T> _device;
+            return _device.get(args...);
         }
 
         private:

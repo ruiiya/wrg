@@ -1,8 +1,12 @@
 #pragma once
-#include <vector>
 
 #include "random_int.h"
 #include "random_float.h"
+
+#include <vector>
+#include <set>
+#include <unordered_set>
+
 
 namespace wrg {
 
@@ -122,6 +126,7 @@ namespace wrg {
         std::vector<T> get_all(std::size_t& _n, Args... args) {
             return get_all_func([&](Args... args) {return _device.get(args...);}, _n, args...);
         }
+
         private:
         random<T> _device;
     };

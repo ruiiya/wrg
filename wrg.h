@@ -1,4 +1,4 @@
 #pragma once
 
 #include "printer.h"
-#include "random_array.h"
+#include "random_string.h"
