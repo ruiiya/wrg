@@ -2,25 +2,11 @@
 
 #include "random_int.h"
 #include "random_float.h"
+#include "detail.h"
 
 #include <vector>
-#include <set>
-#include <unordered_set>
-
 
 namespace wrg {
-
-    namespace detail {
-        template<class T, typename Enable = void>
-        struct dict_container{
-            typedef std::set<T> type;
-        };
-
-        template<class T>
-        struct dict_container<T,typename std::hash<T>::result_type> {
-            typedef std::unordered_set<T> type;
-        };
-    }
 
     enum ARRAY_TYPE {
         NORMAL,

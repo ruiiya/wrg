@@ -1,6 +1,5 @@
 #pragma once 
 #include "random_int.h"
-#include "printer.h"
 
 #include <cassert>
 #include <algorithm>
@@ -47,22 +46,6 @@ namespace wrg {
             return res;
         }
     };
-
-    template<class Ch, class Tr, class... Args>
-    std::basic_ostream<Ch, Tr>& operator<<(std::basic_ostream<Ch, Tr>& os, pattern const& t) {
-        if(t._vp.size()) {
-            os << t._vp << t._pq;
-        } else {
-            os << t._cs << t._pq; 
-        }
-        return os;
-    }
-
-    template<class Ch, class Tr, class... Args>
-    std::basic_ostream<Ch, Tr>& operator<<(std::basic_ostream<Ch, Tr>& os, pattern::pattern_quantity const& t) {
-        os << "{" << t.min << ", " << t.max << "}";
-        return os;
-    }
 
     class parser {
         public:

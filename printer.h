@@ -1,7 +1,11 @@
 #pragma once
 
+#include "graph.h"
+
 #include <cstddef>
-#include <ostream>
+#include <iterator>
+#include <utility>
+#include <tuple>
 
 namespace wrg {
     namespace aux {
@@ -36,6 +40,8 @@ namespace wrg {
         struct is_tuple<std::tuple<T...>>: std::true_type {};
         template <class Lhs, class Rhs>
         struct is_tuple<std::pair<Lhs, Rhs>>: std::true_type {};
+        template <class We>
+        struct is_tuple<edge<We>>: std::true_type {};
     }
 
     template<class Ch, class Tr, class... Args>
@@ -68,6 +74,13 @@ namespace wrg {
                 os << e << ' ';
             }
         }
+        return os;
+    }
+
+    template<class Ch, class Tr, class We>
+    std::basic_ostream<Ch, Tr>& operator<<(std::basic_ostream<Ch, Tr>& os, edge<We> const& t) {
+        os << t.u << " " << t.v;
+        if(t.w.has_value()) os << " " << t.w.value();
         return os;
     }
 
