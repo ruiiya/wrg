@@ -58,15 +58,17 @@ namespace wrg {
     auto operator<<(std::basic_ostream<Ch, Tr>& os, T const& t)
         -> typename std::enable_if<detail::is_container<T>::value, std::basic_ostream<Ch, Tr>&>::type
     {
+        bool is_begin = true;
         for(const auto& e : t) {
             if constexpr (detail::is_container<typename T::value_type>::value) {
-                os << e << '\n';
+                os << (is_begin ? "" : "\n") << e;
             }
             else if constexpr (detail::is_tuple<typename T::value_type>::value) {
-                os << e << '\n';
+                os << (is_begin ? "" : "\n") << e;
             } else {
-                os << e << ' ';
+                os << (is_begin ? "" : " ") << e;
             }
+            is_begin = false;
         }
         return os;
     }

@@ -20,6 +20,20 @@ namespace wrg {
         struct dict_container<T,typename std::hash<T>::result_type> {
             typedef std::unordered_set<T> type;
         };
+
+        template<class T>
+        std::vector<std::vector<T>> split(std::vector<T> const& t, std::size_t bunch_size) {
+            std::vector<std::vector<T>> bunches;
+            bunches.reserve(t.size() / bunch_size + 1);
+            for(std::size_t i = 0;i < t.size(); i += bunch_size) {
+                bunches.emplace_back();
+                auto last = std::min(t.size(), i + bunch_size);
+                auto& vec = bunches.back();
+                vec.reserve(last - i);
+                move(t.begin() + i, t.begin() + last, back_inserter(vec));
+            }
+            return bunches;
+        }
     }
 
     enum ARRAY_TYPE {
@@ -48,8 +62,8 @@ namespace wrg {
             switch (type) {
                 case UNIQUE:
                     return get_unique(args...);
-                case ALL:
-                    return get_all(args...);
+                // case ALL:
+                //     return get_all(args...);
                 case NORMAL:
                 default:
                     return get_normal(args...);
