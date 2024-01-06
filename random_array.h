@@ -42,18 +42,6 @@ namespace wrg {
         ALL,
     };
 
-    template <class Lhs, class Rhs>
-    class random<std::pair<Lhs, Rhs>> {
-        public:
-        template <typename... Args>
-        auto get(Args... args) -> typename std::enable_if<std::is_same<Lhs, Rhs>::value, std::pair<Lhs, Rhs>>::type {
-            return std::make_pair(_device_lhs.get(args...), _device_rhs.get(args...));
-        }
-        private:
-        random<Lhs> _device_lhs;
-        random<Rhs> _device_rhs;
-    };
-
     template<class T>
     class random<std::vector<T>> {
         public:
@@ -75,8 +63,8 @@ namespace wrg {
             switch (_type) {
                 case UNIQUE:
                     return get_unique_func(_func, args...);
-                case ALL:
-                    return get_all_func(_func, args...);
+                // case ALL:
+                //     return get_all_func(_func, args...);
                 case NORMAL:
                 default:
                     return get_normal_func(_func, args...);
