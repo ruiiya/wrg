@@ -4,18 +4,28 @@
 
 using namespace std;
 using namespace wrg;
+using namespace wrg::tm;
+
+void create() {
+    int n = 100000, k;
+    vector<int> a;
+    wrdrg r;
+    r.get(k, 1, n);
+    r.get(a, NORMAL, n, 1, 2*n);
+    wout << make_tuple(n, k) << '\n' << a;
+}
+
+void solve() {
+    int n, k;
+    cin >> n >> k;
+    vector<int> a(n);
+    for(int i = 0;i < n;i ++) cin >> a[i];
+    cout << a[k-1];
+}
 
 int main(int argc, char** argv) {
-    wrdrg r;
-    vector<int> a;
-    vector<vector<int>> b;
-    wout << print_size();
-    wout << r.get(a, NORMAL, 10, 1, 100);
-    wout << '\n';
-    wout << r.get(b, NORMAL, 10, NORMAL, 10, 1, 100);
-    wout << '\n';
-    wout << make_tuple(1,2,3,4,"asdasjd",'a','3');
-    wout << '\n';
-    wout << make_pair(1, 2);
+    test_maker tmkr("GET", 20);
+    tmkr.themis_build_input(create);
+    tmkr.themis_solve_input(solve);
     return 0;
 }

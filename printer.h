@@ -5,6 +5,8 @@
 #include <optional>
 #include <list>
 #include <cassert>
+#include <fstream>
+#include <iomanip>
 
 namespace wrg {
     namespace detail {
@@ -70,9 +72,21 @@ namespace wrg {
 
     class wrg_ostream {
         public:
-        std::ostream& os;
-        wrg_ostream() : os(std::cout) {}
-        wrg_ostream(std::ostream& os) : os(os) {}
+        std::ostream os;
+        wrg_ostream() : os(std::cout.rdbuf()) {}
+        wrg_ostream(std::ostream& os) : os(os.rdbuf()) {}
+        wrg_ostream(const char* file_name, std::ios_base::openmode __mode = std::ios_base::out) : os(&__temp_null_streambuf) {
+            open(file_name, __mode);
+        }
+
+        void open(const char* __s, std::ios_base::openmode __mode = std::ios_base::out) {
+            static std::ofstream __temp_file_stream;
+            if (__temp_file_stream.is_open()) {
+                __temp_file_stream.close();
+            }
+            __temp_file_stream.open(__s, std::ofstream::out);
+            os.rdbuf(__temp_file_stream.rdbuf());
+        }
 
         void print_size(bool _value) {
             __print_size = _value;
@@ -112,6 +126,16 @@ namespace wrg {
         std::string __print_sep_tuple = " ";
         std::string __print_sep_vector_value = " ";
 
+        class NulStreambuf : public std::streambuf
+        {
+            char                dummyBuffer[ 64 ];
+        protected:
+            virtual int         overflow( int c ) 
+            {
+                setp( dummyBuffer, dummyBuffer + sizeof( dummyBuffer ) );
+                return (c == traits_type::eof()) ? '\0' : c;
+            }
+        }__temp_null_streambuf;
     };
 
     template<class T>
